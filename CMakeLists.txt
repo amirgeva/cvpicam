@@ -3,11 +3,11 @@ project(cvpicam)
 
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options)
-find_library(rpicam_app_so rpicam_app REQUIRED)
+find_library(rpicam_app_so rpicam_app.so REQUIRED)
 find_library(libcam_so libcamera.so REQUIRED)
 
 add_library(cvpicam STATIC src/cvpicam.cpp include/cvpicam.h)
-target_include_directories(cvpicam 
+target_include_directories(cvpicam
 PUBLIC
     include/
 PRIVATE
