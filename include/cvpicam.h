@@ -15,7 +15,8 @@ namespace cvpicam
 
         virtual ~ICamera() = default;
 
-        virtual cv::Mat get_latest_frame() = 0;
+        virtual bool active() const = 0;
+        virtual cv::Mat get_latest_frame(timestamp_t&) = 0;
         virtual void add_frame_callback(frame_callback cb) = 0;
 
         static std::shared_ptr<ICamera> create();

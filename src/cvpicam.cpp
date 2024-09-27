@@ -33,6 +33,7 @@ namespace cvpicam
         std::thread                     m_EventThread;
         typedef std::chrono::high_resolution_clock clock;
         clock::time_point               m_StartTime;
+        bool                            m_Active=true;
 
         void event_thread()
         {
@@ -86,6 +87,7 @@ namespace cvpicam
             catch(const std::exception& e)
             {
                 std::cerr << "Exception: " << e.what() << std::endl;
+                m_Active=false;
             }
         }
 
@@ -116,12 +118,18 @@ namespace cvpicam
             stop();
         }
 
-        virtual cv::Mat get_latest_frame() override
+        virtual bool active() const override
+        {
+            return m_Active;
+        }
+
+        virtual cv::Mat get_latest_frame(timestamp_t& ts) override
         {
             cv::Mat res;
             {
                 std::scoped_lock<std::mutex> guard(m_Mutex);
                 res = m_LatestFrame;
+                ts = m_LatestTimestamp;
             }
             return res;
         }
